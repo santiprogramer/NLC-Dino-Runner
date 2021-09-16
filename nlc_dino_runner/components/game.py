@@ -50,7 +50,6 @@ class Game:
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.score()
-        #self.screen.blit(BG, (self.x_pos_bg, self.y_pos_bg))
         self.draw_background()
         self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
@@ -107,10 +106,14 @@ class Game:
 
     def print_menu_elements(self):
         half_screen_height = SCREEN_HEIGHT // 2
-        text, text_rect = text_utils.get_centered_message("Press any Key to Start")
+        if self.death_count > 0:
+            text, text_rect = text_utils.get_centered_message("Press any Key to ReStart")
+        else:
+            text, text_rect = text_utils.get_centered_message("Press any Key to Start")
         self.screen.blit(text, text_rect)
 
-        death_score, death_score_rect = text_utils.get_centered_message("Death count:" + str(self.death_count), height=half_screen_height + 50)
+        death_score, death_score_rect = text_utils.get_centered_message("Death count:" + str(self.death_count), height = half_screen_height + 50)
         self.screen.blit(death_score, death_score_rect)
-        #self.screen.blit(RUNNING[0], ((SCREEN_WIDTH // 2) - 40, (SCREEN_HEIGHT//2) - 150))
+        death_points, death_points_rect = text_utils.get_centered_message("Points:" + str(self.points), height = half_screen_height + 100)
+        self.screen.blit(death_points, death_points_rect)
         self.screen.blit(ICON, ((SCREEN_WIDTH // 2)-40, half_screen_height - 150))
