@@ -14,12 +14,12 @@ class Game:
         pygame.init()
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(ICON)
-        self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
+        self.clock = pygame.time.Clock()
         self.playing = False
+        self.game_speed = 20
         self.x_pos_bg = 0
         self.y_pos_bg = 380
-        self.game_speed = 20
         self.player = Dinosaur()
         self.obstacle_manager = ObstaclesManager()
         self.power_up_manager = PowerUpManager()
@@ -49,7 +49,7 @@ class Game:
         user_input = pygame.key.get_pressed()
         self.player.update(user_input)
         self.obstacle_manager.update(self)
-        self.power_up_manager.update(self.points,self.game_speed, self.player)
+        self.power_up_manager.update(self.points, self.game_speed, self.player)
 
 
     def draw(self):
@@ -81,7 +81,6 @@ class Game:
         self.screen.blit(BG, (self.x_pos_bg, self.y_pos_bg))
 
 
-        # LA imagen se mueve
         self.screen.blit(BG, (self.x_pos_bg + image_width, self.y_pos_bg))
         if self.x_pos_bg <= -image_width:
             self.screen.blit(BG , (self.x_pos_bg + image_width, self.y_pos_bg))
