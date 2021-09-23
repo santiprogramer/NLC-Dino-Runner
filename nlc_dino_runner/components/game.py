@@ -35,7 +35,6 @@ class Game:
         self.life_manager.refull_lives()
         self.game_speed = 20
         self.playing = True
-        #self.player.hammer = False
         while self.playing:
             self.event()
             self.update()
@@ -44,7 +43,6 @@ class Game:
     def event(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.playing = False
                 self.playing = False
                 pygame.display.quit()
                 pygame.quit()

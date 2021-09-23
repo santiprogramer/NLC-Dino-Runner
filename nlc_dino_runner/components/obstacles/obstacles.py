@@ -1,9 +1,7 @@
 from pygame.sprite import Sprite
-
 from nlc_dino_runner.utils.constants import SCREEN_WIDTH
 
 # Clase padre
-
 class Obstacles(Sprite):
 
     def __init__(self, image, obstacle_type):
