@@ -14,8 +14,8 @@ class Game:
         pygame.init()
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(ICON)
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.playing = False
         self.game_speed = 20
         self.x_pos_bg = 0
@@ -23,18 +23,19 @@ class Game:
         self.player = Dinosaur()
         self.obstacle_manager = ObstaclesManager()
         self.power_up_manager = PowerUpManager()
+        self.life_manager = LifeManager()
         self.points = 0
         self.running = True
         self.death_count = 0
-        self.life_manager = LifeManager()
 
     def run(self):
-        self.obstacle_manager.reset_obstacles()
-        self.power_up_manager.reset_power_ups(self.points)
         self.points = 0
+        self.obstacle_manager.reset_obstacles()
+        self.power_up_manager.reset_power_ups(self.points, self.player)
+        self.life_manager.refull_lives()
         self.game_speed = 20
         self.playing = True
-        self.life_manager.refull_lives()
+        #self.player.hammer = False
         while self.playing:
             self.event()
             self.update()
@@ -44,6 +45,10 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.playing = False
+                self.playing = False
+                pygame.display.quit()
+                pygame.quit()
+                exit()
 
     def update(self):
         user_input = pygame.key.get_pressed()
@@ -51,9 +56,7 @@ class Game:
         self.obstacle_manager.update(self)
         self.power_up_manager.update(self.points, self.game_speed, self.player)
 
-
     def draw(self):
-        self.score()
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.score()
@@ -79,12 +82,11 @@ class Game:
     def draw_background(self):
         image_width = BG.get_width()
         self.screen.blit(BG, (self.x_pos_bg, self.y_pos_bg))
-
-
         self.screen.blit(BG, (self.x_pos_bg + image_width, self.y_pos_bg))
         if self.x_pos_bg <= -image_width:
-            self.screen.blit(BG , (self.x_pos_bg + image_width, self.y_pos_bg))
+            #self.screen.blit(BG , (self.x_pos_bg + image_width, self.y_pos_bg))
             self.x_pos_bg = 0
+
         self.x_pos_bg -= self.game_speed
 
     def execute(self):
