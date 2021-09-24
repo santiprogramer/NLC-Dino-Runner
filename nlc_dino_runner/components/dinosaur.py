@@ -85,7 +85,7 @@ class Dinosaur(Sprite):
             self.dino_jump = False
             self.jump_vel = self.JUMP_VEL
 
-    def ckeck_invincibilily(self, screen):
+    def ckeck_invincibilily(self, screen, dark):
         if self.shield:
             time_to_show = round((self.shield_time_up - pygame.time.get_ticks()) / 1000, 2)
             if time_to_show < 0:
@@ -98,7 +98,8 @@ class Dinosaur(Sprite):
                         f'Shield enable for {time_to_show}',
                         width=500,
                         height=40,
-                        size=20
+                        size=20,
+                        dark = dark
                     )
                     screen.blit(text, text_rect)
 

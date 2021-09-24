@@ -2,7 +2,7 @@ import random
 import pygame
 from nlc_dino_runner.components.powerups.hammer import Hammer
 from nlc_dino_runner.components.powerups.shield import Shield
-from nlc_dino_runner.utils.constants import SHIELD_TYPE, DEFAULT_TYPE, HAMMER_TYPE
+from nlc_dino_runner.utils.constants import SHIELD_TYPE, DEFAULT_TYPE, HAMMER_TYPE, SOUND_SHIELD, SOUND_HAMMER
 
 
 class PowerUpManager:
@@ -15,6 +15,7 @@ class PowerUpManager:
         self.hammer = Hammer()
 
     def reset_power_ups(self, points, player):
+        self.hammer.hammers_left = 0
         self.power_ups = []
         self.points = points
         self.when_appears = random.randint(200, 300) + self.points
@@ -41,11 +42,14 @@ class PowerUpManager:
 
                 if player.type == SHIELD_TYPE:
                     player.shield = True
+                    SOUND_SHIELD.play()
                     player.show_text = True
                     player.shield_time_up = power_up.start_time + (time_random * 1000)
 
                 if player.type == HAMMER_TYPE:
+                    self.hammer.count_hammers = True
                     player.hammer = True
+                    SOUND_HAMMER.play()
                     player.hammer_time_up = power_up.start_time + (time_random * 1000)
                     self.hammer.hammers_left = 3
 
@@ -63,5 +67,9 @@ class PowerUpManager:
     def draw(self, screen):
         for power_up in self.power_ups:
             power_up.draw(screen)
+
         if self.throwing_hammer:
             self.hammer.draw_hammer(screen)
+
+        if self.hammer.hammers_left > 0:
+            self.hammer.draw_left_hammers(screen)
